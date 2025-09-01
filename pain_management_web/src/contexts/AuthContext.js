@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
 
 const AuthContext = createContext(null);
@@ -14,6 +15,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     checkAuth();
@@ -27,25 +29,34 @@ export const AuthProvider = ({ children }) => {
         setUser(response.data);
       }
     } catch (error) {
+      console.error('Auth check failed:', error);
       localStorage.removeItem('token');
+      setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
   const login = async (email, password) => {
-    const response = await client.post('/auth/login', {
-      username: email,
-      password,
-    });
-    const { access_token } = response.data;
-    localStorage.setItem('token', access_token);
-    await checkAuth();
+    try {
+      const response = await client.post('/auth/login', {
+        username: email,
+        password,
+      });
+      const { access_token } = response.data;
+      localStorage.setItem('token', access_token);
+      await checkAuth();
+    } catch (error) {
+      console.error('Login failed:', error);
+      const errorMessage = error.response?.data?.detail || 'Failed to login. Please check your credentials.';
+      throw new Error(errorMessage);
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
+    navigate('/login');
   };
 
   const value = {
@@ -53,6 +64,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     logout,
+    checkAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

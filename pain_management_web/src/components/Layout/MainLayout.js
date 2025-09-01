@@ -87,7 +87,7 @@ const MainLayout = ({ children }) => {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Pain Management Diary
           </Typography>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={() => navigate('/profile')}>
             <AccountCircle />
           </IconButton>
           <IconButton color="inherit" onClick={logout}>
