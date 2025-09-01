@@ -10,8 +10,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 
-// Placeholder components for routes
-const Diary = () => <div>Diary Page</div>;
+import Diary from './pages/Diary';
+
 const History = () => <div>History Page</div>;
 const Providers = () => <div>Providers Page</div>;
 const Export = () => <div>Export Page</div>;
