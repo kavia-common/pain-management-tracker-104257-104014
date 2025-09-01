@@ -12,7 +12,7 @@ import Profile from './pages/Profile';
 
 import Diary from './pages/Diary';
 
-const History = () => <div>History Page</div>;
+import History from './pages/History';
 const Providers = () => <div>Providers Page</div>;
 const Export = () => <div>Export Page</div>;
 
